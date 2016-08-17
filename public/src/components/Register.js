@@ -2,18 +2,25 @@
 
 const Register = React.createClass({
 
+    getInitialState: function () {
+
+        return {
+            myState: false
+        }
+    },
+
     target: function () {
-        let username = $("input[name=username]").val();
-        let password = $("input[name=password]").val();
-        let surepassword = $("input[name=password-sure]").val();
+        const username = $("input[name=username]").val();
+        const password = $("input[name=password]").val();
+        const surepassword = $("input[name=password-sure]").val();
         if (username === '') {
-            alert("用户名不能为空，请输入用户名")
+            alert("用户名不能为空，请输入用户名");
         }
         else if (password === '') {
             alert("密码不能为空，请输入密码")
         }
         else if (surepassword === '') {
-            alert("密码不能为空，请输入密码")
+            alert("确认密码不能为空，请输入密码")
         } else {
             $.post('/selectUser', {"name": username}, (data)=> {
                 if (data.length === 0) {
@@ -26,7 +33,8 @@ const Register = React.createClass({
                     } else {
                         $.post('/insertUser', {name: username, password}, (data)=> {
                         });
-                        alert("注册成功");
+                        this.setState({myState: true});
+
                         $("input[name=username]").val('');
                         $("input[name=password]").val('');
                         $("input[name=password-sure]").val('');
@@ -48,7 +56,7 @@ const Register = React.createClass({
         return <div>
             <Header/>
             <Image/>
-            <RegisterArea target={this.target}/>
+            <RegisterArea target={this.target} myState={this.state.myState}/>
         </div>
     }
 });
@@ -57,7 +65,7 @@ const Header = React.createClass({
     render: function () {
         return <div className="row my-nav my-bg my-white-color">
             <ul className="nav">
-                <ReactRouter.Link to="/login">
+                <ReactRouter.Link to="/home">
                     <li className="col-xs-4"><span className="glyphicon glyphicon-circle-arrow-left">返回</span></li>
                 </ReactRouter.Link>
                 <li className="col-xs-4 text-center">注册</li>
@@ -76,6 +84,7 @@ const Image = React.createClass({
 
 const RegisterArea = React.createClass({
     render: function () {
+
         return <div id="form-4" className="design">
             <form>
                 <p className="col-xs-offset-1 col-xs-10">
@@ -85,11 +94,12 @@ const RegisterArea = React.createClass({
                     <input type="password" name='password' placeholder="密码"/>
                 </p>
                 <p className="col-xs-offset-1 col-xs-10">
-                    <input type="password" name='password-sure' placeholder="确认密码"/>
+                    <input type="password" name='password-sure' placeholder="确认密码" onBlur={this.props.target}/>
                 </p>
             </form>
             <p className="text-center">
-                <button className="btn btn-primary" onClick={this.props.target}>注册</button>
+                <ReactRouter.Link to={this.props.myState ? "/login" : "/register"}>register
+                </ReactRouter.Link>
             </p>
         </div>
     }

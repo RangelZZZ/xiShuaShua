@@ -21,16 +21,16 @@ const Login = React.createClass({
                 alert("密码不能为空，请输入密码")
             }
             else if (data.length === 0) {
-                alert("该用户不存在")
+                alert("该用户不存在");
                 $("input[name=username]").val('');
                 $("input[name=password]").val('');
             }
             else if (data[0].password != password) {
-                alert("密码不正确")
+                alert("密码不正确");
                 $("input[name=password]").val('');
             }
-            else {
-                this.setState({isSame: !this.state.isSame})
+            else if(date[0].password === password && password !=null) {
+                this.setState({isSame: !this.state.isSame});
             }
         })
     },
@@ -89,7 +89,7 @@ const LoginArea = React.createClass({
                 <input type="password" placeholder="密码" name="password" id="password"/>
             </div>
             <div className="col-xs-offset-3">
-                <ReactRouter.Link to={this.props.isSame ? '/home' : ''}>
+                <ReactRouter.Link to={this.props.isSame ? '/home' : 'login'}>
                     <input type="submit" value="登录" onClick={this.props.toggle}/>
                 </ReactRouter.Link>
             </div>
