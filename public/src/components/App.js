@@ -7,13 +7,21 @@ class App extends Component {
         super(props);
         this.state = {
             id: 0,
-            time: ''
+            time: '',
+            bestId:0,
+            bestTime:'',
         }
     }
 
     getId(id) {
         this.setState({
             id: id
+        })
+    }
+
+    getBestId(id){
+        this.setState({
+            bestId:id
         })
     }
 
@@ -35,8 +43,13 @@ class App extends Component {
                 {this.props.children && React.cloneElement(this.props.children, {
                     id: this.state.id,
                     time: this.state.time,
+                    bestId:this.state.bestId,
+                    bestTime:this.state.bestTime,
                     onGetId: this.getId.bind(this),
-                    onGetTime: this.getTime.bind(this)
+                    onGetTime: this.getTime.bind(this),
+                    onGetBestId:this.getBestId.bind(this),
+                    onGetBestTime:this.getBestTime.bind(this),
+
                 })}
             </div>
         )
